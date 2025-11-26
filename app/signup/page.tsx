@@ -1,7 +1,20 @@
 // app/signup/page.tsx
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
+  const router = useRouter();
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault(); // evita il refresh della pagina
+
+    // qui in futuro metteremo la chiamata al backend (API)
+    // per ora simuliamo signup avvenuta e andiamo in dashboard
+    router.push("/dashboard");
+  }
+
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center px-4">
       <div className="w-full max-w-md space-y-8">
@@ -15,23 +28,30 @@ export default function SignupPage() {
           </p>
         </div>
 
-        <form className="space-y-4 bg-slate-900/70 border border-slate-800 rounded-2xl p-6">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4 bg-slate-900/70 border border-slate-800 rounded-2xl p-6"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="space-y-1">
               <label className="text-xs text-slate-300">Nome</label>
               <input
+                name="name"
                 type="text"
                 className="w-full rounded-xl bg-slate-950 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/70"
                 placeholder="Michele"
+                required
               />
             </div>
 
             <div className="space-y-1">
               <label className="text-xs text-slate-300">Età</label>
               <input
+                name="age"
                 type="number"
                 className="w-full rounded-xl bg-slate-950 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/70"
                 placeholder="28"
+                required
               />
             </div>
           </div>
@@ -39,18 +59,22 @@ export default function SignupPage() {
           <div className="space-y-1">
             <label className="text-xs text-slate-300">Email</label>
             <input
+              name="email"
               type="email"
               className="w-full rounded-xl bg-slate-950 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/70"
               placeholder="tu@email.com"
+              required
             />
           </div>
 
           <div className="space-y-1">
             <label className="text-xs text-slate-300">Password</label>
             <input
+              name="password"
               type="password"
               className="w-full rounded-xl bg-slate-950 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/70"
               placeholder="••••••••"
+              required
             />
           </div>
 
@@ -105,3 +129,4 @@ export default function SignupPage() {
     </main>
   );
 }
+
