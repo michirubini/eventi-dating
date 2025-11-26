@@ -1,21 +1,50 @@
 // app/profile/page.tsx
+"use client";
+
 import Link from "next/link";
+import { useUserStore } from "../store/userStore";
 
 export default function ProfilePage() {
-  // per ora dati finti; in futuro li prenderemo dal DB
-  const user = {
-    name: "Michele",
-    age: 28,
-    city: "Brescia",
-    bio: "Aperitivi, live music e serate tranquille. Preferisco poche persone ma buone.",
-    lifestyleTags: [
-      "Mattiniero",
-      "Sportivo",
-      "Serate tranquille",
-      "Concerti",
-      "Aperitivi",
-    ],
-  };
+  const user = useUserStore((state) => state.user);
+
+  if (!user) {
+    return (
+      <main className="min-h-screen bg-slate-950 text-slate-100 px-4 py-6">
+        <div className="max-w-md mx-auto space-y-4">
+          <header className="flex items-center justify-between">
+            <h1 className="text-xl font-semibold">Il tuo profilo</h1>
+            <Link
+              href="/"
+              className="text-xs text-emerald-400 hover:text-emerald-300"
+            >
+              Torna alla home
+            </Link>
+          </header>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5 space-y-3">
+            <p className="text-sm text-slate-300">
+              Nessun profilo trovato. Probabilmente non hai ancora completato la
+              registrazione.
+            </p>
+            <div className="flex gap-2 text-sm">
+              <Link
+                href="/signup"
+                className="rounded-xl px-4 py-2 bg-emerald-500 text-slate-950 font-medium"
+              >
+                Vai alla signup
+              </Link>
+              <Link
+                href="/login"
+                className="rounded-xl px-4 py-2 border border-slate-700 text-slate-200"
+              >
+                Vai al login
+              </Link>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 px-4 py-6">
@@ -37,41 +66,39 @@ export default function ProfilePage() {
             <div className="h-14 w-14 rounded-full bg-gradient-to-br from-emerald-500/60 to-slate-900" />
             <div>
               <p className="text-lg font-semibold">
-                {user.name}, {user.age}
+                {user.name}
+                {user.age ? `, ${user.age}` : ""}
               </p>
-              <p className="text-xs text-slate-400">{user.city}</p>
+              <p className="text-xs text-slate-400">{user.email}</p>
             </div>
           </div>
 
           <div className="space-y-1">
             <p className="text-xs uppercase text-slate-400 tracking-wide">
-              Bio
-            </p>
-            <p className="text-sm text-slate-200 leading-relaxed">
-              {user.bio}
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <p className="text-xs uppercase text-slate-400 tracking-wide">
               Stile di vita
             </p>
-            <div className="flex flex-wrap gap-2 text-xs">
-              {user.lifestyleTags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-slate-700 px-3 py-1 bg-slate-950/80 text-slate-200"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {user.tags.length === 0 ? (
+              <p className="text-sm text-slate-400">
+                Non hai ancora selezionato nessun tag. Puoi aggiornarli dalla
+                prossima versione dell&apos;app.
+              </p>
+            ) : (
+              <div className="flex flex-wrap gap-2 text-xs">
+                {user.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-slate-700 px-3 py-1 bg-slate-950/80 text-slate-200"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
-        {/* Azioni future */}
         <section className="text-center text-xs text-slate-500">
-          In futuro qui potrai modificare questi dati, aggiungere foto e
+          In futuro qui potrai modificare i tuoi dati, aggiungere foto e
           collegare i tuoi eventi preferiti.
         </section>
       </div>

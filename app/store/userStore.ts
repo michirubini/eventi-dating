@@ -1,3 +1,4 @@
+// app/store/userStore.ts
 import { create } from "zustand";
 
 type User = {

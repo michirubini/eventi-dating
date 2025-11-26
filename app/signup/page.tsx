@@ -4,10 +4,28 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "../store/userStore";
+import { useState } from "react";
+
+const AVAILABLE_TAGS = [
+  "Mattiniero",
+  "Nottambulo",
+  "Sportivo",
+  "Serate tranquille",
+  "Concerti",
+  "Aperitivi",
+];
 
 export default function SignupPage() {
   const router = useRouter();
   const setUser = useUserStore((state) => state.setUser);
+
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  function toggleTag(tag: string) {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -18,13 +36,10 @@ export default function SignupPage() {
       name: formData.get("name") as string,
       age: Number(formData.get("age")),
       email: formData.get("email") as string,
-      tags: [], // lo gestiremo nello step successivo
+      tags: selectedTags,
     };
 
-    // Salvo l’utente nel nostro store globale
     setUser(user);
-
-    // Redirect alla dashboard
     router.push("/dashboard");
   }
 
@@ -92,30 +107,37 @@ export default function SignupPage() {
             />
           </div>
 
-          {/* I TAG li implementiamo nello STEP successivo */}
+          {/* TAG stile di vita */}
           <div className="space-y-2">
             <label className="text-xs text-slate-300">
               Il tuo stile di vita (tag)
             </label>
 
             <div className="flex flex-wrap gap-2 text-xs">
-              {[
-                "Mattiniero",
-                "Nottambulo",
-                "Sportivo",
-                "Serate tranquille",
-                "Concerti",
-                "Aperitivi",
-              ].map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  className="rounded-full border border-slate-700 px-3 py-1 bg-slate-950/60 hover:border-emerald-400 hover:text-emerald-300 transition"
-                >
-                  {tag}
-                </button>
-              ))}
+              {AVAILABLE_TAGS.map((tag) => {
+                const isSelected = selectedTags.includes(tag);
+                return (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => toggleTag(tag)}
+                    className={`rounded-full border px-3 py-1 transition ${
+                      isSelected
+                        ? "border-emerald-400 bg-emerald-500/20 text-emerald-300"
+                        : "border-slate-700 bg-slate-950/60 hover:border-emerald-400 hover:text-emerald-300"
+                    }`}
+                  >
+                    {tag}
+                  </button>
+                );
+              })}
             </div>
+
+            {selectedTags.length === 0 && (
+              <p className="text-[11px] text-slate-500">
+                Seleziona almeno 1–2 tag per aiutarci a trovare persone compatibili.
+              </p>
+            )}
           </div>
 
           <button
