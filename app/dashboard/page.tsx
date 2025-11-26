@@ -60,16 +60,26 @@ export default function Dashboard() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 px-4 py-6">
       <div className="max-w-md mx-auto space-y-6">
-        {/* Header */}
+                {/* Header */}
         <header className="flex items-center justify-between">
           <h1 className="text-xl font-semibold">EventMatch</h1>
-          <Link
-            href="/logout"
-            className="text-xs text-red-400 hover:text-red-300"
-          >
-            Logout
-          </Link>
+
+          <div className="flex items-center gap-4 text-xs">
+            <Link
+              href="/profile"
+              className="text-slate-300 hover:text-emerald-400"
+            >
+              Profilo
+            </Link>
+            <Link
+              href="/logout"
+              className="text-red-400 hover:text-red-300"
+            >
+              Logout
+            </Link>
+          </div>
         </header>
+
 
         {/* Eventi vicini */}
         <section className="space-y-3">
