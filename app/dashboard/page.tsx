@@ -1,6 +1,61 @@
 // app/dashboard/page.tsx
 import Link from "next/link";
 
+type Event = {
+  id: number;
+  title: string;
+  dateLabel: string;
+  peopleInterested: number;
+  highlyCompatible: number;
+};
+
+type MatchUser = {
+  id: number;
+  name: string;
+  age: number;
+  subtitle: string;
+  variant?: "highlight";
+};
+
+const events: Event[] = [
+  {
+    id: 1,
+    title: "Aperitivo in centro",
+    dateLabel: "Oggi, 20:30",
+    peopleInterested: 6,
+    highlyCompatible: 2,
+  },
+  {
+    id: 2,
+    title: "Concerto live indie",
+    dateLabel: "Domani, 21:00",
+    peopleInterested: 12,
+    highlyCompatible: 3,
+  },
+];
+
+const matches: MatchUser[] = [
+  {
+    id: 1,
+    name: "Sara",
+    age: 27,
+    subtitle: "Live music • Aperitivi",
+  },
+  {
+    id: 2,
+    name: "Luca",
+    age: 30,
+    subtitle: "Sport • Serate tranquille",
+    variant: "highlight",
+  },
+  {
+    id: 3,
+    name: "Giulia",
+    age: 29,
+    subtitle: "Mostre • Vini naturali",
+  },
+];
+
 export default function Dashboard() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 px-4 py-6">
@@ -22,12 +77,30 @@ export default function Dashboard() {
             Eventi vicino a te
           </h2>
 
-          <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 space-y-1">
-            <p className="text-emerald-400 text-xs uppercase">Oggi, 20:30</p>
-            <p className="font-semibold">Aperitivo in centro</p>
-            <p className="text-xs text-slate-400">
-              6 persone interessate • 2 molto compatibili
-            </p>
+          <div className="space-y-3">
+            {events.map((event, index) => (
+              <div
+                key={event.id}
+                className={`rounded-xl border bg-slate-900/60 p-4 space-y-1 ${
+                  index === 0
+                    ? "border-emerald-500/60 shadow-lg shadow-emerald-500/20"
+                    : "border-slate-800"
+                }`}
+              >
+                <p
+                  className={`text-xs uppercase ${
+                    index === 0 ? "text-emerald-400" : "text-slate-400"
+                  }`}
+                >
+                  {event.dateLabel}
+                </p>
+                <p className="font-semibold">{event.title}</p>
+                <p className="text-xs text-slate-400">
+                  {event.peopleInterested} persone interessate •{" "}
+                  {event.highlyCompatible} molto compatibili
+                </p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -38,21 +111,22 @@ export default function Dashboard() {
           </h2>
 
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-xl bg-slate-900/60 p-3 border border-slate-800 space-y-2">
-              <div className="h-24 rounded-lg bg-gradient-to-br from-slate-700 to-slate-900" />
-              <p className="text-sm font-medium">Sara, 27</p>
-              <p className="text-[11px] text-slate-400">
-                Live music • Aperitivi
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-slate-900/60 p-3 border border-slate-800 space-y-2">
-              <div className="h-24 rounded-lg bg-gradient-to-br from-emerald-600/60 to-slate-900" />
-              <p className="text-sm font-medium">Luca, 30</p>
-              <p className="text-[11px] text-slate-400">
-                Sport • Serate tranquille
-              </p>
-            </div>
+            {matches.map((user) => (
+              <div
+                key={user.id}
+                className={`rounded-xl p-3 border space-y-2 ${
+                  user.variant === "highlight"
+                    ? "bg-gradient-to-br from-emerald-600/50 to-slate-900 border-emerald-500/70"
+                    : "bg-slate-900/60 border-slate-800"
+                }`}
+              >
+                <div className="h-24 rounded-lg bg-gradient-to-br from-slate-700/70 to-slate-900" />
+                <p className="text-sm font-medium">
+                  {user.name}, {user.age}
+                </p>
+                <p className="text-[11px] text-slate-200">{user.subtitle}</p>
+              </div>
+            ))}
           </div>
         </section>
 
