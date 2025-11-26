@@ -3,15 +3,28 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "../store/userStore";
 
 export default function SignupPage() {
   const router = useRouter();
+  const setUser = useUserStore((state) => state.setUser);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault(); // evita il refresh della pagina
+    e.preventDefault();
 
-    // qui in futuro metteremo la chiamata al backend (API)
-    // per ora simuliamo signup avvenuta e andiamo in dashboard
+    const formData = new FormData(e.currentTarget);
+
+    const user = {
+      name: formData.get("name") as string,
+      age: Number(formData.get("age")),
+      email: formData.get("email") as string,
+      tags: [], // lo gestiremo nello step successivo
+    };
+
+    // Salvo l’utente nel nostro store globale
+    setUser(user);
+
+    // Redirect alla dashboard
     router.push("/dashboard");
   }
 
@@ -49,6 +62,7 @@ export default function SignupPage() {
               <input
                 name="age"
                 type="number"
+                min="18"
                 className="w-full rounded-xl bg-slate-950 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/70"
                 placeholder="28"
                 required
@@ -78,6 +92,7 @@ export default function SignupPage() {
             />
           </div>
 
+          {/* I TAG li implementiamo nello STEP successivo */}
           <div className="space-y-2">
             <label className="text-xs text-slate-300">
               Il tuo stile di vita (tag)
@@ -129,4 +144,3 @@ export default function SignupPage() {
     </main>
   );
 }
-

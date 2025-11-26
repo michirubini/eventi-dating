@@ -1,5 +1,8 @@
 // app/dashboard/page.tsx
+"use client";
+
 import Link from "next/link";
+import { useUserStore } from "../store/userStore";
 
 type Event = {
   id: number;
@@ -57,10 +60,13 @@ const matches: MatchUser[] = [
 ];
 
 export default function Dashboard() {
+  const user = useUserStore((state) => state.user);
+
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 px-4 py-6">
       <div className="max-w-md mx-auto space-y-6">
-                {/* Header */}
+
+        {/* Header */}
         <header className="flex items-center justify-between">
           <h1 className="text-xl font-semibold">EventMatch</h1>
 
@@ -71,6 +77,7 @@ export default function Dashboard() {
             >
               Profilo
             </Link>
+
             <Link
               href="/logout"
               className="text-red-400 hover:text-red-300"
@@ -80,6 +87,16 @@ export default function Dashboard() {
           </div>
         </header>
 
+        {/* Messaggio di benvenuto */}
+        {user && (
+          <p className="text-sm text-slate-300">
+            Ciao{" "}
+            <span className="text-emerald-400 font-semibold">
+              {user.name}
+            </span>{" "}
+            👋
+          </p>
+        )}
 
         {/* Eventi vicini */}
         <section className="space-y-3">
@@ -121,20 +138,20 @@ export default function Dashboard() {
           </h2>
 
           <div className="grid grid-cols-2 gap-3">
-            {matches.map((user) => (
+            {matches.map((u) => (
               <div
-                key={user.id}
+                key={u.id}
                 className={`rounded-xl p-3 border space-y-2 ${
-                  user.variant === "highlight"
+                  u.variant === "highlight"
                     ? "bg-gradient-to-br from-emerald-600/50 to-slate-900 border-emerald-500/70"
                     : "bg-slate-900/60 border-slate-800"
                 }`}
               >
                 <div className="h-24 rounded-lg bg-gradient-to-br from-slate-700/70 to-slate-900" />
                 <p className="text-sm font-medium">
-                  {user.name}, {user.age}
+                  {u.name}, {u.age}
                 </p>
-                <p className="text-[11px] text-slate-200">{user.subtitle}</p>
+                <p className="text-[11px] text-slate-200">{u.subtitle}</p>
               </div>
             ))}
           </div>
@@ -146,6 +163,7 @@ export default function Dashboard() {
             Partecipa &amp; Matcha
           </button>
         </div>
+
       </div>
     </main>
   );

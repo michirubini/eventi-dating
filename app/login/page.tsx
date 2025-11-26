@@ -1,17 +1,31 @@
 // app/login/page.tsx
 "use client";
 
+import { useUserStore } from "../store/userStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();
+  const setUser = useUserStore((state) => state.setUser);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    // qui in futuro controlleremo email/password col DB
-    // per ora facciamo finta che il login vada bene
+    const formData = new FormData(e.currentTarget);
+
+    // Per ora simuliamo il login (nessun DB ancora)
+    const user = {
+      name: "Utente",
+      age: 0,
+      email: formData.get("email") as string,
+      tags: [],
+    };
+
+    // Salviamo l’utente nello stato globale
+    setUser(user);
+
+    // Redirect alla dashboard
     router.push("/dashboard");
   }
 
