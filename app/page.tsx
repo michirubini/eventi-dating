@@ -1,4 +1,6 @@
 // app/page.tsx
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-950 to-black text-slate-100 flex items-center justify-center px-4">
@@ -23,9 +25,13 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <button className="inline-flex justify-center items-center rounded-2xl px-6 py-3 text-sm font-medium bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow-lg shadow-emerald-500/30">
+            <Link
+              href="/signup"
+              className="inline-flex justify-center items-center rounded-2xl px-6 py-3 text-sm font-medium bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow-lg shadow-emerald-500/30"
+            >
               Inizia ora (MVP)
-            </button>
+            </Link>
+
             <button className="inline-flex justify-center items-center rounded-2xl px-6 py-3 text-sm font-medium border border-slate-600 hover:border-slate-400 text-slate-200 transition">
               Guarda come funziona
             </button>
